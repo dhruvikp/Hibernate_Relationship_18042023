@@ -14,6 +14,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
+import com.simplilearn.entity.Address;
+import com.simplilearn.entity.Course;
 import com.simplilearn.entity.PhoneNumber;
 import com.simplilearn.entity.Student;
 import com.simplilearn.util.HibernateUtil;
@@ -50,7 +52,7 @@ public class AddStudentServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		// Prepare Object
-		Student student = getStudent(request);
+		Student student = populateStudentObject(request);
 
 		// STEP 1 : Gets SessionFactory object
 		SessionFactory sf = HibernateUtil.buildSessionFactory();
@@ -69,7 +71,7 @@ public class AddStudentServlet extends HttpServlet {
 		response.sendRedirect("read-student");
 	}
 
-	private Student getStudent(HttpServletRequest request) {
+	private Student populateStudentObject(HttpServletRequest request) {
 		Student student = new Student();
 
 		String firstName = request.getParameter("fname");
@@ -83,9 +85,22 @@ public class AddStudentServlet extends HttpServlet {
 
 		String phone_3 = request.getParameter("phone_3");
 		String phone_type_3 = request.getParameter("phone_type_3");
+		
+		String course_name_1 = request.getParameter("course_1");
+		String course_type_1 = request.getParameter("course_type_1");
+		
+		String course_name_2 = request.getParameter("course_2");
+		String course_type_2 = request.getParameter("course_type_2");
+		
+		String course_name_3 = request.getParameter("course_3");
+		String course_type_3 = request.getParameter("course_type_3");
+		
+		String street = request.getParameter("street");
+		String state = request.getParameter("state");
+		String city = request.getParameter("city");
 
+		// Logic to populate Phones
 		List<PhoneNumber> phones = new ArrayList<>();
-
 		PhoneNumber phoneNumber1 = new PhoneNumber();
 		phoneNumber1.setPhoneNumber(phone_1);
 		phoneNumber1.setPhoneType(phone_type_1);
@@ -104,10 +119,46 @@ public class AddStudentServlet extends HttpServlet {
 		phones.add(phoneNumber1);
 		phones.add(phoneNumber2);
 		phones.add(phoneNumber3);
-
+		
+		
+		// Logic to populate Courses
+		List<Student> students = new ArrayList<>();
+		students.add(student);
+		
+		List<Course> courses = new ArrayList<>();
+		
+		Course course1 = new Course();
+		course1.setCourseName(course_name_1);
+		course1.setCourseType(course_type_1);
+		course1.setStudents(students);
+		
+		Course course2 = new Course();
+		course2.setCourseName(course_name_2);
+		course2.setCourseType(course_type_2);
+		course2.setStudents(students);
+		
+		Course course3 = new Course();
+		course3.setCourseName(course_name_3);
+		course3.setCourseType(course_type_3);
+		course3.setStudents(students);
+		
+		courses.add(course1);
+		courses.add(course2);
+		courses.add(course3);
+		
 		student.setFname(firstName);
 		student.setLname(lastName);
 		student.setPhones(phones);
+		student.setCourses(courses);
+		
+		// Write Logic to populate Address
+		Address address = new Address();
+		address.setStreet(street);
+		address.setCity(city);
+		address.setState(state);
+		
+		student.setAddress(address);
+		
 		return student;
 	}
 

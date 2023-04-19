@@ -4,9 +4,13 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -27,6 +31,43 @@ public class Student {
 
 	@OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
 	List<PhoneNumber> phones;
+
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "student_course_link_19042023", 
+				joinColumns = {@JoinColumn(name="student_id")},
+				inverseJoinColumns = {@JoinColumn(name="course_id")}
+			)
+	List<Course> courses;
+	
+	
+	@Embedded
+	Address address;
+	
+	public String getAddress() {
+		StringBuffer sb = new StringBuffer();
+		if(this.address!=null) {
+			sb.append(this.address.getStreet()+","+this.address.getCity()+","+this.address.getState());
+		}
+		return sb.toString();
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
+	}
+
+	public String getCourses() {
+		StringBuffer sb = new StringBuffer();
+		if(courses!=null && courses.size()>0) {
+			for(Course course : courses) {
+				sb.append(course.getCourseName()+",");
+			}
+		}
+		return sb.toString();
+	}
+
+	public void setCourses(List<Course> courses) {
+		this.courses = courses;
+	}
 
 	public long getStudent_id() {
 		return student_id;

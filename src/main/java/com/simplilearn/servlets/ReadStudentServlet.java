@@ -56,6 +56,9 @@ public class ReadStudentServlet extends HttpServlet {
 			pw.println("<th> Studnet FirstName </th>");
 			pw.println("<th> Student LastName </th>");
 			pw.println("<th> Student Phone Numbers </th>");
+			pw.println("<th> Student Course Names </th>");
+			pw.println("<th> Student Address </th>");
+			
 			pw.println("</tr>");
 
 			for(Student student : students) {
@@ -64,6 +67,8 @@ public class ReadStudentServlet extends HttpServlet {
 				pw.println("<td>"+student.getFname()+"</td>");
 				pw.println("<td>"+student.getLname()+"</td>");
 				pw.println("<td>"+student.getPhones()+"</td>");
+				pw.println("<td>" + student.getCourses()+"</td>");
+				pw.println("<td>" + student.getAddress()+"</td>");
 				pw.println("</tr>");
 			}
 			
